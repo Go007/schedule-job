@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: schedule-job
+  profiles:
+    active: dev
+
+server:
+  port: 9527
+  servlet:
+    context-path: /job
+
+mybatis-plus:
+  type-aliases-package: com.hong.job.domain
+  mapper-locations: classpath:mapper/*.xml
