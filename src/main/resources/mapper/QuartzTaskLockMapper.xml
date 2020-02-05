@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hong.job.mapper.QuartzTaskLockMapper">
+
+    <update id="lock" parameterType="map">
+       update quartz_task_lock
+       set exec_ip = #{execIp},
+           acquire_time = now(),
+           status = 1
+       where task_no = #{taskNo}
+       and status = 0;
+   </update>
+
+    <update id="unlock" parameterType="map">
+       update quartz_task_lock
+       set
+           acquire_time = now(),
+           status = 0
+       where task_no = #{taskNo}
+       and status = 1
+       and exec_ip = #{execIp};
+   </update>
+
+    <update id="batchResetStatus">
+           update quartz_task_lock
+           set status = 0
+           where status = 1
+   </update>
+
+    <insert id="insertTaskLock" parameterType="com.hong.job.domain.QuartzTaskLock">
+             insert into quartz_task_lock(
+               task_no,
+               status
+             )values(
+                #{taskNo},
+                #{status}
+             )
+    </insert>
+</mapper>

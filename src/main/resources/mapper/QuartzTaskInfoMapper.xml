@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hong.job.mapper.QuartzTaskInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.hong.job.domain.QuartzTaskInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+        <result column="task_no" property="taskNo" jdbcType="VARCHAR"/>
+        <result column="task_name" property="taskName" jdbcType="VARCHAR"/>
+        <result column="bean_name" property="beanName" jdbcType="VARCHAR"/>
+        <result column="bean_class" property="beanClass" jdbcType="VARCHAR"/>
+        <result column="cron" property="cron" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, version, task_no, task_name, bean_class, bean_name,cron,status,create_time, update_time
+   </sql>
+
+    <insert id="insertSelective" parameterType="com.hong.job.domain.QuartzTaskInfo">
+        insert into quartz_task_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="taskNo != null">
+                task_no,
+            </if>
+            <if test="taskName != null">
+                task_name,
+            </if>
+            <if test="beanName != null">
+                bean_name,
+            </if>
+            <if test="beanClass != null">
+                bean_class,
+            </if>
+            <if test="cron != null">
+                cron,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="version != null">
+                #{version},
+            </if>
+            <if test="taskNo != null">
+                #{taskNo},
+            </if>
+            <if test="taskName != null">
+                #{taskName},
+            </if>
+            <if test="beanName != null">
+                #{beanName},
+            </if>
+            <if test="beanClass != null">
+                #{beanClass},
+            </if>
+            <if test="cron != null">
+                #{cron},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.hong.job.domain.QuartzTaskInfo">
+        update quartz_task_info
+        <set>
+            <if test="version != null">
+                version = version+1,
+            </if>
+            <if test="taskNo != null">
+                task_no = #{taskNo},
+            </if>
+            <if test="taskName != null">
+                task_name = #{taskName},
+            </if>
+            <if test="beanName != null">
+                bean_name = #{beanName},
+            </if>
+            <if test="beanClass != null">
+                bean_class = #{beanClass},
+            </if>
+            <if test="cron != null">
+                cron = #{cron},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id} and version = #{version}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.hong.job.domain.QuartzTaskInfo">
+        update quartz_task_info
+        <set>
+            <if test="version != null">
+                version = #{version},
+            </if>
+            <if test="taskNo != null">
+                task_no = #{taskNo},
+            </if>
+            <if test="taskName != null">
+                task_name = #{taskName},
+            </if>
+            <if test="beanName != null">
+                bean_name = #{beanName},
+            </if>
+            <if test="beanClass != null">
+                bean_class = #{beanClass},
+            </if>
+            <if test="cron != null">
+                cron = #{cron},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from quartz_task_info
+        <if test="taskNo != null">
+            <where>
+                task_no = #{taskNo}
+            </where>
+        </if>
+        order by id desc limit #{startIndex},10;
+    </select>
+
+    <select id="selectByTaskNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from quartz_task_info where task_no=#{taskNo}
+    </select>
+
+    <select id="getTaskById" parameterType="java.lang.Long" resultType="com.hong.job.domain.QuartzTaskInfo">
+        select
+        <include refid="Base_Column_List"/>
+        from quartz_task_info where id = #{id}
+   </select>
+
+    <select id="getTaskByTaskNo" parameterType="java.lang.String" resultType="com.hong.job.domain.QuartzTaskInfo">
+        select
+        <include refid="Base_Column_List"/>
+        from quartz_task_info where task_no = #{taskNo}
+    </select>
+
+    <select id="getTaskByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from quartz_task_info where status = #{status}
+    </select>
+
+</mapper>

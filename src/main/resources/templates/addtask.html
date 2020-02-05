@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>定时任务新增页面</title>
+    <!-- jquery -->
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/animate.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mediaelementplayer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/red.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/simple-line-icons.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="col-md-12 top-20 padding-0">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="panel-heading">
+                    <h4>新增定时任务项</h4>
+                </div>
+                <div class="col-md-6" style="padding-left:10px;">
+                    <form action="#" method="post">
+                        <div class="form-group"><label class="col-sm-2 control-label text-right">任务编号:</label>
+                            <div class="col-sm-10"><input type="text" name="taskNo" id="taskNo" class="form-control">
+                            </div>
+                        </div>
+                        <br/> <br/> <br/>
+                        <div class="form-group"><label class="col-sm-2 control-label text-right">任务名称:</label>
+                            <div class="col-sm-10"><input type="text" name="taskName" id="taskName"
+                                                          class="form-control"></div>
+                        </div>
+                        <br/> <br/>
+                        <div class="form-group"><label class="col-sm-2 control-label text-right">执行bean名称:</label>
+                            <div class="col-sm-10"><input type="text" name="beanName" id="beanName"
+                                                          class="form-control"></div>
+                        </div>
+                        <br/> <br/>
+                        <div class="form-group"><label class="col-sm-2 control-label text-right">执行bean类名:</label>
+                            <div class="col-sm-10"><input type="text" name="beanClass" id="beanClass"
+                                                          class="form-control"></div>
+                        </div>
+                        <br/> <br/>
+                        <div class="form-group"><label class="col-sm-2 control-label text-right">定时配置规则:</label>
+                            <div class="col-sm-10"><input type="text" placeholder="(例如: * /5 * * * * ? 每5秒执行一次)"
+                                                          name="cron" id="cron" class="form-control">
+                            </div>
+                        </div>
+                        <br/> <br/>
+                        <div class="form-group"><label class="col-sm-2 control-label text-right">状态:</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="status">
+                                    <option th:value=1 selected="selected" disabled="disabled">启动</option>
+                                    <option th:value=0 selected="selected" disabled="disabled">暂停</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/> <br/>
+                        <input type="button" class="btn btn-3d btn-danger" th:onclick="'history.go(-1);'" align="left"
+                               style="float:left;margin-left:700px;" value="关闭"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="button" class="btn  btn-3d btn-success" id="savetask" align="right" value="保存"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $("#savetask").on('click', function (e) {
+            var taskNo = $("#taskNo").val();
+            var taskName = $("#taskName").val();
+            var beanName = $("#beanName").val();
+            var beanClass = $("#beanClass").val();
+            var cron = $("#cron").val();
+            var status = $("#status").val();
+            $.ajax({
+                url: "/job/quartz/add/task",
+                dataType: "json",
+                type: "POST",
+                data: {
+                    "taskNo": taskNo,
+                    "taskName": taskName,
+                    "beanName": beanName,
+                    "beanClass": beanClass,
+                    "cron": cron,
+                    "status": status,
+                },
+                success: function (result) {
+                    if (result.code == 200) {
+                        alert("添加成功!");
+                        location.href = "/";
+                    } else if (result.code == 1001) {
+                        alert("该任务编号已经存在");
+                    }
+                    else {
+                        alert("system error");
+                    }
+                }
+            })
+        });
+    });
+</script>
+</body>
+</html>
