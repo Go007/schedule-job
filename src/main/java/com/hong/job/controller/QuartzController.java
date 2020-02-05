@@ -111,7 +111,7 @@ public class QuartzController {
      */
     @ResponseBody
     @RequestMapping(value = "/runtask/rightnow", method = RequestMethod.GET)
-    public String runTaskRightNow(@RequestParam(value = "taskno", required = false) String taskNo, Model model) {
+    public String runTaskRightNow(@RequestParam(value = "taskNo", required = false) String taskNo, Model model) {
         logger.info("");
         try {
             if (StringUtils.isEmpty(taskNo)) {

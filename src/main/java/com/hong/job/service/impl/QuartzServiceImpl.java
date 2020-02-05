@@ -1,12 +1,10 @@
 package com.hong.job.service.impl;
 
 import com.hong.job.domain.QuartzTaskInfo;
-import com.hong.job.domain.QuartzTaskLock;
-import com.hong.job.mapper.QuartzTaskLockMapper;
-import com.hong.job.task.AbstractTaskService;
-import com.hong.job.task.QuartzMainJobFactory;
 import com.hong.job.mapper.QuartzTaskInfoMapper;
 import com.hong.job.service.QuartzService;
+import com.hong.job.task.AbstractTaskService;
+import com.hong.job.task.QuartzMainJobFactory;
 import com.hong.job.util.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
@@ -38,8 +36,8 @@ public class QuartzServiceImpl implements QuartzService, InitializingBean {
     @Autowired
     private SchedulerFactoryBean schedulerBean;
 
-    @Autowired
-    private QuartzTaskLockMapper quartzTaskLockMapper;
+  //  @Autowired
+  //  private QuartzTaskLockMapper quartzTaskLockMapper;
 
     @Override
     public String addTask(QuartzTaskInfo quartzTaskInfo) {
@@ -58,10 +56,10 @@ public class QuartzServiceImpl implements QuartzService, InitializingBean {
             return "fail";
         }
 
-        QuartzTaskLock quartzTaskLock = new QuartzTaskLock();
+       /* QuartzTaskLock quartzTaskLock = new QuartzTaskLock();
         quartzTaskLock.setTaskNo(taskNo);
         quartzTaskLock.setStatus(0);
-        quartzTaskLockMapper.insertTaskLock(quartzTaskLock);
+        quartzTaskLockMapper.insertTaskLock(quartzTaskLock);*/
 
         return "success";
     }
@@ -115,7 +113,7 @@ public class QuartzServiceImpl implements QuartzService, InitializingBean {
             task.setUpdateTime(date);
             quartzTaskInfoMapper.updateByPrimaryKeySelective(task);
             scheduler.deleteJob(new JobKey(taskNo));
-            log.info("taskNo={},taskName={},cron={},任务{}成功", quartzTaskInfo.getTaskNo(), quartzTaskInfo.getTaskName(), quartzTaskInfo.getCron(), 1 == status ? "启动" : "暂停");
+            log.info("taskNo={},taskName={},cron={},任务{}成功", quartzTaskInfo.getTaskNo(), quartzTaskInfo.getTaskName(), quartzTaskInfo.getCron(), 1 == status ?  "暂停":"启动");
 
             if (0 == status) {
                 this.schedule(quartzTaskInfo, scheduler);

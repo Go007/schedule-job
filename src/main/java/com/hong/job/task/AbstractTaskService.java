@@ -1,13 +1,7 @@
 package com.hong.job.task;
 
-import com.hong.job.mapper.QuartzTaskLockMapper;
 import com.hong.job.util.IPV4Util;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author wanghong
@@ -15,13 +9,12 @@ import java.util.Map;
  * @date 2020/02/03 18:37
  **/
 @Slf4j
-@Component
-public class AbstractTaskService {
+public abstract class AbstractTaskService {
 
-    @Autowired
-    private QuartzTaskLockMapper quartzTaskLockMapper;
+    //  @Autowired
+    // private QuartzTaskLockMapper quartzTaskLockMapper;
 
-    public void run(String taskNo) {
+  /*  public void run(String taskNo) {
         String ip = IPV4Util.getLocalIpv4Address();
         Map<String,Object> map = new HashMap<>();
         map.put("taskNo",taskNo);
@@ -35,7 +28,19 @@ public class AbstractTaskService {
             int unlock = quartzTaskLockMapper.unlock(map);
             log.info("task-unlock: taskNo=[{}],ip=[{}],unlock=[{}]", taskNo, ip, unlock);
         }
+    }*/
+
+    public void run(String taskNo) {
+        String ip = IPV4Util.getLocalIpv4Address();
+        log.info("taskNo=[{}] begin,executorIp=[{}]", taskNo, ip);
+        try {
+            doWork();
+        } catch (Exception e) {
+            // TODO  任务执行发生异常，可以发送告警邮件给相关负责人,也可以在数据库中记录执行情况
+            log.error("taskNo=[{}] error,executorIp=[{}],exception=[{}]", taskNo, ip, e);
+        }
+        log.info("taskNo=[{}] end,executorIp=[{}]", taskNo, ip);
     }
 
-    public void doWork(){}
+    protected abstract void doWork();
 }

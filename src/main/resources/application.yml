@@ -3,6 +3,13 @@ spring:
     name: schedule-task
   profiles:
     active: dev
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    enabled: true
+    encoding: UTF-8
+    mode: HTML
 
 server:
   port: 9527

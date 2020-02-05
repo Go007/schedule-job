@@ -1,9 +1,9 @@
 package com.hong.job.task;
 
 import com.hong.job.mapper.QuartzTaskLockMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 
 /**
@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
  * @Description
  * @date 2020/02/03 19:21
  **/
-@Component
+@Slf4j
+// @Component
 public class StartupRunner implements CommandLineRunner {
 
     @Autowired
@@ -28,6 +29,7 @@ public class StartupRunner implements CommandLineRunner {
      *  从而导致重启时定时任务得不到执行
      */
     private void batchResetTaskStatus(){
+        log.info("重置定时任务状态为初始状态");
         quartzTaskLockMapper.batchResetStatus();
     }
 }

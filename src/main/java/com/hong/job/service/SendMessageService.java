@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
  **/
 @Slf4j
 @Service
-public class PushTodoService extends AbstractTaskService {
+public class SendMessageService extends AbstractTaskService {
 
     @Override
     protected void doWork() {
         try {
-            Thread.sleep(3000);
-            log.info("==============PushTodoService=========");
+            Thread.sleep(2000);
+            log.info("==============SendMessageService=========");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
