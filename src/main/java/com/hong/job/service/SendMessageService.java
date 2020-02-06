@@ -16,6 +16,7 @@ public class SendMessageService extends AbstractTaskService {
     public void doWork() {
         try {
             Thread.sleep(2000);
+            int i = 1/0;
             log.info("==============SendMessageService=========");
         } catch (InterruptedException e) {
             e.printStackTrace();
