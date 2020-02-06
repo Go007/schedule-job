@@ -12,4 +12,5 @@ public interface QuartzService {
     String startJob(String taskNo);
     void initLoadOnlineTasks();
     String runTaskRightNow(String taskNo);
+    boolean existsTaskNo(String taskNo);
 }

@@ -2,7 +2,10 @@ package com.hong.job.controller;
 
 import com.hong.job.domain.QuartzTaskInfo;
 import com.hong.job.service.QuartzService;
+import com.hong.job.task.AbstractTaskService;
+import com.hong.job.util.ApplicationContextHolder;
 import org.apache.commons.lang3.StringUtils;
+import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +47,7 @@ public class QuartzController {
         }
         return "/index";
     }
-    
+
     @RequestMapping(value = "/add/taskpage", method = RequestMethod.GET)
     public String addTaskpage() {
         return "addtask";
@@ -54,6 +57,15 @@ public class QuartzController {
     @RequestMapping(value = "/add/task", method = RequestMethod.POST)
     public String addTask(QuartzTaskInfo taskInfo) {
         try {
+            // 验证编号是否已存在
+            if (quartzService.existsTaskNo(taskInfo.getTaskNo())) {
+                return "任务编号已存在";
+            }
+
+            String verifyInfo = verifyTaskInfo(taskInfo);
+            if (StringUtils.isNotEmpty(verifyInfo)) {
+                return verifyInfo;
+            }
             String result = quartzService.addTask(taskInfo);
             return result;
         } catch (Exception e) {
@@ -69,10 +81,41 @@ public class QuartzController {
         return "updatetask";
     }
 
+    private String verifyTaskInfo(QuartzTaskInfo taskInfo) {
+        StringBuilder sb = new StringBuilder();
+
+        // 验证 cron 表达式 是否正确
+        if (!CronExpression.isValidExpression(taskInfo.getCron())) {
+            sb.append("cron表达式错误;");
+        }
+
+        // 验证 执行 bean 名称和类名 是否有效
+        Object taskService = null;
+        try {
+            taskService = ApplicationContextHolder.getBean(taskInfo.getBeanName());
+            if (!(taskService instanceof AbstractTaskService)) {
+                sb.append("执行bean非AbstractTaskService类型;");
+            } else {
+                String beanClass = taskService.getClass().getName();
+                if (!beanClass.equals(taskInfo.getBeanClass())) {
+                    sb.append("执行bean类名错误;");
+                }
+            }
+        } catch (Exception e) {
+            sb.append("执行bean名称错误;");
+        }
+
+        return sb.toString();
+    }
+
     @ResponseBody
     @RequestMapping(value = "/edit/task", method = RequestMethod.POST)
     public String editTask(QuartzTaskInfo taskInfo) {
         try {
+            String verifyInfo = verifyTaskInfo(taskInfo);
+            if (StringUtils.isNotEmpty(verifyInfo)) {
+                return verifyInfo;
+            }
             String result = quartzService.updateTask(taskInfo);
             return result;
         } catch (Exception e) {

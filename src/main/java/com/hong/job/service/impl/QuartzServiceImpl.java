@@ -165,6 +165,11 @@ public class QuartzServiceImpl implements QuartzService, InitializingBean {
     }
 
     @Override
+    public boolean existsTaskNo(String taskNo) {
+        return quartzTaskInfoMapper.selectByTaskNo(taskNo) > 0 ? true:false;
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         this.initLoadOnlineTasks();
     }
@@ -182,4 +187,6 @@ public class QuartzServiceImpl implements QuartzService, InitializingBean {
         scheduler.scheduleJob(jobDetail, cronTrigger);
         log.info("taskNo={},taskName={},beanName={},cron={} load to quartz success!", quartzTaskInfo.getTaskNo(), quartzTaskInfo.getTaskName(), quartzTaskInfo.getBeanName(),quartzTaskInfo.getCron());
     }
+
+
 }
