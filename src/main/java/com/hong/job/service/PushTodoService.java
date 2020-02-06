@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class PushTodoService extends AbstractTaskService {
 
     @Override
-    protected void doWork() {
+    public void doWork() {
         try {
             Thread.sleep(3000);
             log.info("==============PushTodoService=========");

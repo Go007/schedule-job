@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class SendMessageService extends AbstractTaskService {
 
     @Override
-    protected void doWork() {
+    public void doWork() {
         try {
             Thread.sleep(2000);
             log.info("==============SendMessageService=========");

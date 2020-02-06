@@ -26,11 +26,13 @@ public class SendemailApplicationTests {
      */
     @Test
     public void sendmail() {
-        mailService.sendSimpleMail("1536054473@qq.com","主题：你好普通邮件","内容：第一封邮件");
+        String[] to = {"1536054473@qq.com"};
+        mailService.sendSimpleMail(to,"主题：你好普通邮件","内容：第一封邮件");
     }
 
     @Test
     public void sendmailHtml(){
-        mailService.sendHtmlMail("1536054473@qq.com","主题：你好html邮件","<h1>内容：第一封html邮件</h1>");
+        String[] to = {"1536054473@qq.com"};
+        mailService.sendHtmlMail(to,"主题：你好html邮件","<h1>内容：第一封html邮件</h1>");
     }
 }

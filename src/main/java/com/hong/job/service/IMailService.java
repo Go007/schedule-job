@@ -13,7 +13,7 @@ public interface IMailService {
      * @param subject 主题
      * @param content 内容
      */
-    void sendSimpleMail(String to, String subject, String content);
+    void sendSimpleMail(String[] to, String subject, String content);
 
     /**
      * 发送HTML邮件
@@ -22,7 +22,7 @@ public interface IMailService {
      * @param subject 主题
      * @param content 内容
      */
-    void sendHtmlMail(String to, String subject, String content);
+    void sendHtmlMail(String[] to, String subject, String content);
 
     /**
      * 发送带附件的邮件
@@ -32,5 +32,5 @@ public interface IMailService {
      * @param content  内容
      * @param filePath 附件
      */
-    void sendAttachmentsMail(String to, String subject, String content, String filePath);
+    void sendAttachmentsMail(String[] to, String subject, String content, String filePath);
 }

@@ -43,7 +43,7 @@ public class IMailServiceImpl implements IMailService {
      * @param content 内容
      */
     @Override
-    public void sendSimpleMail(String to, String subject, String content) {
+    public void sendSimpleMail(String[] to, String subject, String content) {
         //创建SimpleMailMessage对象
         SimpleMailMessage message = new SimpleMailMessage();
         //邮件发送人
@@ -66,7 +66,7 @@ public class IMailServiceImpl implements IMailService {
      * @param content 内容
      */
     @Override
-    public void sendHtmlMail(String to, String subject, String content) {
+    public void sendHtmlMail(String[] to, String subject, String content) {
         //获取MimeMessage对象
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper messageHelper;
@@ -98,7 +98,7 @@ public class IMailServiceImpl implements IMailService {
      * @param filePath 附件
      */
     @Override
-    public void sendAttachmentsMail(String to, String subject, String content, String filePath) {
+    public void sendAttachmentsMail(String[] to, String subject, String content, String filePath) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
